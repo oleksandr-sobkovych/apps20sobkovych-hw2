@@ -1,7 +1,6 @@
 package ua.edu.ucu.collections;
 
 import ua.edu.ucu.collections.exceptions.EmptyListException;
-import ua.edu.ucu.collections.exceptions.EmptyQueueException;
 import ua.edu.ucu.collections.exceptions.EmptyStackException;
 import ua.edu.ucu.collections.immutable.ImmutableLinkedList;
 

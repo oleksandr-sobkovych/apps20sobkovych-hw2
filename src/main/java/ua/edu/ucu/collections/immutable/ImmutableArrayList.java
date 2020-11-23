@@ -5,7 +5,8 @@ import ua.edu.ucu.collections.exceptions.ListExceptionHandler;
 import java.util.Arrays;
 
 public class ImmutableArrayList implements ImmutableList {
-    private static final ListExceptionHandler HANDLER = new ListExceptionHandler();
+    private static final ListExceptionHandler HANDLER =
+            new ListExceptionHandler();
     private final Object[] data;
 
     public ImmutableArrayList(Object... data) {
@@ -35,7 +36,8 @@ public class ImmutableArrayList implements ImmutableList {
         Object[] newData = new Object[size()+c.length];
         System.arraycopy(this.data, 0, newData, 0, index);
         System.arraycopy(c, 0, newData, index, c.length);
-        System.arraycopy(this.data, index, newData, index+c.length, size()-index);
+        System.arraycopy(this.data, index, newData,
+                index+c.length, size()-index);
         return new ImmutableArrayList(newData);
     }
 

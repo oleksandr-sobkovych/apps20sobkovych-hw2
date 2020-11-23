@@ -12,14 +12,4 @@ public class ListNode {
         this.data = data;
         this.next = null;
     }
-
-    public ListNode() {
-        this.data = null;
-        this.next = null;
-    }
-
-    @Override
-    public String toString() {
-        return "ListNode{" + data + "}";
-    }
 }

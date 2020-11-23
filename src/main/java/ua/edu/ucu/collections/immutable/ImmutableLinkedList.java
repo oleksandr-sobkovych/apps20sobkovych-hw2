@@ -5,21 +5,22 @@ import ua.edu.ucu.collections.helpers.CopyResult;
 import ua.edu.ucu.collections.helpers.MakeResult;
 
 public class ImmutableLinkedList implements ImmutableList {
-    private static final ListExceptionHandler HANDLER = new ListExceptionHandler();
-    private final ListNode head;
-    private final ListNode tail;
+    private static final ListExceptionHandler HANDLER =
+            new ListExceptionHandler();
+    private final ListNode start;
+    private final ListNode end;
     private final int size;
 
     public ImmutableLinkedList(Object... data) {
         MakeResult nodes = makeAll(data);
-        this.head = nodes.getHead();
-        this.tail = nodes.getTail();
+        this.start = nodes.getHead();
+        this.end = nodes.getTail();
         this.size = data.length;
     }
 
     private ImmutableLinkedList(ListNode head, ListNode tail, int size) {
-        this.head = head;
-        this.tail = tail;
+        this.start = head;
+        this.end = tail;
         this.size = size;
     }
 
@@ -74,7 +75,7 @@ public class ImmutableLinkedList implements ImmutableList {
             return new ImmutableArrayList(this.toArray());
         }
         ListNode head, tail;
-        CopyResult copiedFirst = copyAll(this.head, index);
+        CopyResult copiedFirst = copyAll(this.start, index);
         MakeResult inserted = makeAll(c);
         head = copiedFirst.getHead();
         if (head == null) {
@@ -96,7 +97,7 @@ public class ImmutableLinkedList implements ImmutableList {
         HANDLER.checkEmpty(this, "cannot get element in empty list");
         HANDLER.checkIndex(index, 0, size()-1,
                 "index for getting element out of bounds");
-        ListNode pointer = this.head;
+        ListNode pointer = this.start;
         for (int i = 0; i < index; i++) {
             pointer = pointer.getNext();
         }
@@ -109,7 +110,7 @@ public class ImmutableLinkedList implements ImmutableList {
         HANDLER.checkIndex(index, 0, size()-1,
                 "index for removing element out of bounds");
         ListNode head, tail;
-        CopyResult headCopy = copyAll(this.head, index);
+        CopyResult headCopy = copyAll(this.start, index);
         CopyResult tailCopy = copyAll(headCopy.getRest(), size()-index);
         tail = tailCopy.getTail();
         if (headCopy.getHead() != null) {
@@ -129,19 +130,21 @@ public class ImmutableLinkedList implements ImmutableList {
         HANDLER.checkEmpty(this, "cannot set element in empty list");
         HANDLER.checkIndex(index, 0, size()-1,
                 "index for setting element out of bounds");
-        CopyResult headCopy = copyAll(this.head, index);
+        CopyResult headCopy = copyAll(this.start, index);
         CopyResult tailCopy = copyAll(headCopy.getRest(), size()-index);
         tailCopy.getHead().setData(e);
         if (headCopy.getHead() != null) {
             headCopy.getTail().setNext(tailCopy.getHead());
-            return new ImmutableLinkedList(headCopy.getHead(), tailCopy.getTail(), size());
+            return new ImmutableLinkedList(headCopy.getHead(),
+                    tailCopy.getTail(), size());
         }
-        return new ImmutableLinkedList(tailCopy.getHead(), tailCopy.getTail(), size());
+        return new ImmutableLinkedList(tailCopy.getHead(),
+                tailCopy.getTail(), size());
     }
 
     @Override
     public int indexOf(Object e) {
-        ListNode pointer = this.head;
+        ListNode pointer = this.start;
         for (int i = 0; i < size(); i++) {
             if (pointer.getData().equals(e)) {
                 return i;
@@ -169,7 +172,7 @@ public class ImmutableLinkedList implements ImmutableList {
     @Override
     public Object[] toArray() {
         Object[] data = new Object[size()];
-        ListNode pointer = this.head;
+        ListNode pointer = this.start;
         for (int i = 0; i < size(); i++) {
             data[i] = pointer.getData();
             pointer = pointer.getNext();
@@ -187,12 +190,12 @@ public class ImmutableLinkedList implements ImmutableList {
 
     public Object getFirst() {
         HANDLER.checkEmpty(this, "cannot get head element from empty list");
-        return this.head.getData();
+        return this.start.getData();
     }
 
     public Object getLast() {
         HANDLER.checkEmpty(this, "cannot get tail element from empty list");
-        return this.tail.getData();
+        return this.end.getData();
     }
 
     public ImmutableLinkedList removeFirst() {
@@ -206,7 +209,7 @@ public class ImmutableLinkedList implements ImmutableList {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        ListNode pointer = this.head;
+        ListNode pointer = this.start;
         for (int i = 0; i < size(); i++) {
             stringBuilder.append(pointer.getData());
             if (i < size()-1) {
